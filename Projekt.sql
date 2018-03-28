@@ -42,10 +42,13 @@ BEGIN
     
     SELECT 'Stworzono osoby';
     
-    CREATE TABLE Lekarze (
+    CREATE TABLE Personel (
 		
-        id_lekarza INT AUTO_INCREMENT PRIMARY KEY,
+        id_personelu INT AUTO_INCREMENT PRIMARY KEY,
         id_osoby INT NOT NULL,
+        data_zatrudnienia DATE,
+        data_zwolnienia DATE,
+        specjalizacja CHAR(1) NOT NULL CHECK (specjalizacja IN ('P', 'L')), #P - Pielęgniarka, L - Lekarz
         FOREIGN KEY (id_osoby) REFERENCES Osoby( id_osoby )    
     );
     
@@ -53,22 +56,12 @@ BEGIN
     
     CREATE TABLE Slownik_chorob (
 		
-        kod VARCHAR(7) NOT NULL,
+        kod VARCHAR(7) PRIMARY KEY,
         skrocony_opis VARCHAR(150) NOT NULL,
         pelny_opis VARCHAR(200) NOT NULL
     );
     
     SELECT 'Stworzono slownik chorób';
-	   
-    CREATE TABLE Skierowanie (
-		
-        id_skierowania INT AUTO_INCREMENT PRIMARY KEY,
-        id_pacjenta INT NOT NULL,
-        id_lekarza INT NOT NULL,
-        data_skierowania DATE NOT NULL,
-        rozpoznanie VARCHAR(500) NOT NULL,
-        FOREIGN KEY (id_pacjenta) REFERENCES Osoby( id_osoby ) 
-    );
     
     CREATE TABLE Ubezpieczenie (
     
@@ -82,10 +75,90 @@ BEGIN
     
     CREATE TABLE Slownik_procedur_medycznych (
 		
-        id_procedury INT PRIMARY KEY,
+        id_procedury INT AUTO_INCREMENT PRIMARY KEY,
         nazwa_procedury VARCHAR(50) NOT NULL    
     );
     
+    CREATE TABLE Slownik_lekow (
+		
+        id_leku INT AUTO_INCREMENT PRIMARY KEY,
+        nazwa_leku varchar(20) NOT NULL,
+        producent_leku varchar(20)
+    );
+    
+    SELECT 'Stworzono slownik lekow';
+    
+    # Dodać trigger, który blokuje wstawienie personelu innego niż Lekarz
+    CREATE TABLE Epizod (
+    
+		id_epizodu INT PRIMARY KEY,
+        data_rozp_epizodu DATETIME DEFAULT NOW(),
+        data_zak_epizodu DATE,
+        id_personelu INT NOT NULL,
+        id_pacjenta INT NOT NULL,
+        FOREIGN KEY (id_personelu) REFERENCES Personel( id_personelu ),
+        FOREIGN KEY (id_pacjenta) REFERENCES Osoby( id_osoby )
+    );
+    
+    SELECT 'Stworzono epizody';
+    
+    CREATE TABLE Archiwum (
+		
+        id_epizodu INT PRIMARY KEY,
+        data_rozp_epizodu DATE NOT NULL,
+        data_zak_epizodu DATE NOT NULL,
+        id_personelu INT NOT NULL,
+        id_pacjenta INT NOT NULL,
+        FOREIGN KEY (id_personelu) REFERENCES Personel( id_personelu ),
+        FOREIGN KEY (id_pacjenta) REFERENCES Osoby( id_osoby )
+    );
+    
+	CREATE TABLE Zlecenia_lekow (
+		
+        id_zlecenia INT AUTO_INCREMENT PRIMARY KEY,
+        id_leku INT NOT NULL,
+        id_epizodu INT NOT NULL,
+        dawka VARCHAR(30) NOT NULL,
+        FOREIGN KEY (id_leku) REFERENCES Slownik_lekow( id_leku ),
+        FOREIGN KEY (id_epizodu) REFERENCES Epizod( id_epizodu )
+    );
+    SELECT 'Stworzono zlecenia lekow';
+    
+	CREATE TABLE Skierowanie (
+		
+        id_skierowania INT AUTO_INCREMENT PRIMARY KEY,
+        id_epizodu INT NOT NULL,
+        id_personelu INT NOT NULL,
+        data_skierowania DATE NOT NULL,
+        rozpoznanie VARCHAR(500) NOT NULL,
+        FOREIGN KEY (id_epizodu) REFERENCES Epizod( id_epizodu ) 
+    );
+    SELECT 'Stworzono skierowania';
+    
+	CREATE TABLE Diagnoza (
+    
+		id_diagnozy INT PRIMARY KEY,
+        id_choroba_glowna VARCHAR(7) NOT NULL,
+        id_choroby_wspolist varchar(50),
+        id_epizodu INT,
+        FOREIGN KEY (id_choroba_glowna) REFERENCES Slownik_chorob( kod ),
+        FOREIGN KEY (id_epizodu) REFERENCES Epizod( id_epizodu )
+    );
+    
+    SELECT 'Stworzono diagnozy';
+    
+	CREATE TABLE Zlecenie_badania (
+		
+        id_zlecenia INT PRIMARY KEY,
+        id_uslugi INT NOT NULL,
+        id_personelu INT NOT NULL,
+        data_zlecenia DATE NOT NULL,
+        id_epizodu INT NOT NULL,
+        FOREIGN KEY (id_uslugi) REFERENCES Slownik_procedur_medycznych( id_procedury ),
+        FOREIGN KEY (id_epizodu) REFERENCES Epizod( id_epizodu ) 
+    );    
+    
+    SELECT 'Stworzono zlecenia badan';
 	
 END //
 

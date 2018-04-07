@@ -1,14 +1,7 @@
 DROP DATABASE IF EXISTS Oddzial_Okulistyczny;
 CREATE DATABASE Oddzial_Okulistyczny;
 
-use Oddzial_Okulistyczny;
-/*LOAD DATA LOCAL INFILE 'C:\\Users\\19513\\Desktop\\Bazy_danych_medycznych\\Bazy_danych_medycznych\\ICD-10.txt' INTO TABLE Oddzial_Okulistyczny.Slownik_chorob
-CHARACTER SET utf8
-FIELDS TERMINATED BY '	'
-LINES TERMINATED BY '\n'
-(@col1, @col2,@col3, @col4)
-set kod = @col1, skrocony_opis = @col2, pelny_opis = @col3;
-*/
+USE Oddzial_Okulistyczny;
 
 DELIMITER //
 

@@ -59,7 +59,7 @@ CREATE PROCEDURE stworzUbezpieczenie
     wazne_od			DATE,
     wazne_do			DATE
 )
-proc_label : BEGIN
+BEGIN
 
 	INSERT INTO ubezpieczenie
     VALUES ( id_osoby, nazwa_ubezpieczyciela, numer_ubezpieczenia, wazne_od, wazne_do );
@@ -73,7 +73,7 @@ CREATE PROCEDURE stworzEpizod
 	id_lekarza 	INT,
     id_pacjenta	INT
 )
-proc_label : BEGIN
+BEGIN
 
 	INSERT INTO epizod ( id_personelu, id_pacjenta )
     VALUES ( id_lekarza, id_pacjenta );

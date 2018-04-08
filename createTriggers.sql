@@ -8,15 +8,19 @@ CREATE TRIGGER zablokuj_wstawienie_epizodu BEFORE INSERT ON epizod
 FOR EACH ROW
 BEGIN
 
-	DECLARE id_pracownika INT;
-    SET @id_pracownika := NEW.id_personelu;
+	DECLARE pracownik INT;
     
-    IF ( NOT EXISTS ( SELECT * FROM personel WHERE ( personel.id_pracownika = id_pracownika AND personel.specjalizacja = 'L' ) ) )
+    SELECT id_pracownika 
+    INTO pracownik
+    FROM personel 
+    WHERE ( personel.id_personelu = NEW.id_personelu );
+    
+    IF ( NOT EXISTS ( SELECT * FROM personel WHERE ( personel.id_pracownika = pracownik AND personel.specjalizacja = 'L' ) ) )
     THEN
         SIGNAL SQLSTATE '45000' 
 		SET MESSAGE_TEXT = "Podane id lekarza nie wskazuje na lekarza";
     END IF;
-
+	
 END //
 
 DROP TRIGGER IF EXISTS dodaj_do_archiwum //
@@ -25,6 +29,7 @@ CREATE TRIGGER dodaj_do_archiwum BEFORE DELETE ON epizod
 FOR EACH ROW
 BEGIN
 
-	INSERT INTO archiwum SELECT * FROM OLD;
+    INSERT INTO archiwum ( id_epizodu, data_rozp_epizodu, data_zak_epizodu, id_personelu, id_pacjenta )
+    VALUES ( OLD.id_epizodu, OLD.data_rozp_epizodu, OLD.data_zak_epizodu, OLD.id_personelu, OLD.id_pacjenta );
 
 END //

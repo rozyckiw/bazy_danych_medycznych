@@ -50,4 +50,3 @@ CALL stworzEpizod( 4, 4 );
 CALL stworzEpizod( 4, 5 );
 CALL stworzEpizod( 4, 6 );
 CALL stworzEpizod( 1, 7 );
-CALL stworzEpizod( 1, 8 );

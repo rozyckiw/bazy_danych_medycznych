@@ -84,7 +84,7 @@ BEGIN
     # Dodać trigger, który blokuje wstawienie personelu innego niż Lekarz
     CREATE TABLE Epizod (
     
-		id_epizodu INT PRIMARY KEY,
+		id_epizodu INT AUTO_INCREMENT PRIMARY KEY,
         data_rozp_epizodu DATETIME DEFAULT NOW(),
         data_zak_epizodu DATE,
         id_personelu INT NOT NULL,
@@ -130,10 +130,10 @@ BEGIN
     
 	CREATE TABLE Diagnoza (
     
-		id_diagnozy INT PRIMARY KEY,
+		id_diagnozy INT AUTO_INCREMENT PRIMARY KEY,
         id_choroba_glowna VARCHAR(7) NOT NULL,
-        id_choroby_wspolist varchar(50),
-        id_epizodu INT,
+        id_choroby_wspolist VARCHAR(50),
+        id_epizodu INT NOT NULL,
         FOREIGN KEY (id_choroba_glowna) REFERENCES Slownik_chorob( kod ),
         FOREIGN KEY (id_epizodu) REFERENCES Epizod( id_epizodu )
     );
@@ -142,7 +142,7 @@ BEGIN
     
 	CREATE TABLE Zlecenie_badania (
 		
-        id_zlecenia INT PRIMARY KEY,
+        id_zlecenia INT AUTO_INCREMENT PRIMARY KEY,
         id_uslugi INT NOT NULL,
         id_personelu INT NOT NULL,
         data_zlecenia DATE NOT NULL,

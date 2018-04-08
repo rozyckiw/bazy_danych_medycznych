@@ -46,7 +46,7 @@ CALL stworzUbezpieczenie( 8, 'Concordia', '12345678917', '2013-2-6', '2023-2-6' 
 CALL stworzUbezpieczenie( 9, 'Compensa', '12345678918', '2011-11-2', '2021-11-2' );
 CALL stworzUbezpieczenie( 10, 'AXA', '12345678919', '2009-12-30', '2019-12-30' );
 
-CALL stworzEpizod( 4, 4 );
+CALL stworzEpizod( 4, 3 );
 CALL stworzEpizod( 4, 5 );
 CALL stworzEpizod( 4, 6 );
 CALL stworzEpizod( 1, 7 );

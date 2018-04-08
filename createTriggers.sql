@@ -15,10 +15,11 @@ BEGIN
     FROM personel 
     WHERE ( personel.id_personelu = NEW.id_personelu );
     
-    IF ( NOT EXISTS ( SELECT * FROM personel WHERE ( personel.id_pracownika = pracownik AND personel.specjalizacja = 'L' ) ) )
+    IF ( NOT EXISTS ( SELECT * FROM personel WHERE ( personel.id_pracownika = pracownik AND personel.specjalizacja = 'L' ) ) 
+			OR ( pracownik = NEW.id_pacjenta ) )
     THEN
         SIGNAL SQLSTATE '45000' 
-		SET MESSAGE_TEXT = "Podane id lekarza nie wskazuje na lekarza";
+		SET MESSAGE_TEXT = "Podane id lekarza nie wskazuje na lekarza lub lekarz jest tą samą osobą co pacjent";
     END IF;
 	
 END //

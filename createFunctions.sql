@@ -29,8 +29,8 @@ BEGIN
 	
     INSERT INTO osoby (	imie, nazwisko, PESEL, imiona_rodzicow, typ_dokumentu, seria_dokumentu, data_urodzenia, miejsce_urodzenia, 
 						telefon_kontaktowy, plec, panstwo, miasto, ulica, numer_domu, kod_pocztowy, gmina, wojewodztwo )
-    VALUES( @imie_pacjenta, @nazwisko_pacjenta, @pesel, @imiona_rodzicow, @typ_dokumentu, @seria_dokumentu, @data_urodzenia, @miejsce_urodzenia, 
-							@telefon_kontaktowy, @plec, @panstwo, @miasto, @ulica, @numer_domu, @kod_pocztowy, @gmina, @wojewodztwo );
+    VALUES( imie_pacjenta, nazwisko_pacjenta, pesel, imiona_rodzicow, typ_dokumentu, seria_dokumentu, data_urodzenia, miejsce_urodzenia, 
+							telefon_kontaktowy, plec, panstwo, miasto, ulica, numer_domu, kod_pocztowy, gmina, wojewodztwo );
 
 END //
 
@@ -38,25 +38,14 @@ DROP PROCEDURE IF EXISTS stworzPracownika //
 
 CREATE PROCEDURE stworzPracownika
 (
-	pesel_pracownika		INT,
-    data_zatrudnienia		DATE,
-    specjalizacja			CHAR(1)
+	id_pracownika		INT,
+    data_zatrudnienia	DATE,
+    specjalizacja		CHAR(1)
 )
 proc_label : BEGIN
-
-	DECLARE id_pracownika INT;
-    SET @id_pracownika := -1;
-    
-    SELECT @id_pracownika := id_osoby 
-    FROM osoby
-    WHERE ( osoby.PESEL = @pesel_pracownika );
-    
-    IF @id_pracownika = -1 
-    THEN LEAVE proc_label;
-    END IF;
     
     INSERT INTO personel ( id_pracownika, data_zatrudnienia, specjalizacja )
-    VALUES ( @id_pracownika, @data_zatrudnienia, @specjalizacja );
+    VALUES ( id_pracownika, data_zatrudnienia, specjalizacja );
 
 END //
 
@@ -64,7 +53,7 @@ DROP PROCEDURE IF EXISTS stworzUbezpieczenie //
 
 CREATE PROCEDURE stworzUbezpieczenie
 (
-	pesel_osoby 		VARCHAR(11),
+	id_osoby 			INT,
     nazwa_ubezpieczenia VARCHAR(50),
     numer_ubezpieczenia VARCHAR(50),
     wazne_od			DATE,
@@ -72,19 +61,8 @@ CREATE PROCEDURE stworzUbezpieczenie
 )
 proc_label : BEGIN
 
-	DECLARE id_osoby INT;
-    SET @id_osoby := -1;
-    
-    SELECT @id_osoby := id_osoby 
-    FROM osoby
-    WHERE ( osoby.PESEL = @pesel_osoby );
-    
-    IF @id_osoby = -1 
-    THEN LEAVE proc_label;
-    END IF;
-
 	INSERT INTO ubezpieczenie
-    VALUES ( @id_osoby, @nazwa_ubezpieczyciela, @numer_ubezpieczenia, @wazne_od, @wazne_do );
+    VALUES ( id_osoby, nazwa_ubezpieczyciela, numer_ubezpieczenia, wazne_od, wazne_do );
 
 END //
 
@@ -92,35 +70,13 @@ DROP PROCEDURE IF EXISTS stworzEpizod //
 
 CREATE PROCEDURE stworzEpizod
 (
-	pesel_lekarza 	VARCHAR(11),
-    pesel_pacjenta	VARCHAR(11)
+	id_lekarza 	INT,
+    id_pacjenta	INT
 )
 proc_label : BEGIN
 
-	DECLARE id_lekarza 	INT;
-	DECLARE id_pacjenta INT;
-            
-    SET @id_lekarza := -1;
-    SET @id_pacjenta := -1;
-    
-    SELECT @id_lekarza := id_osoby 
-    FROM osoby
-    WHERE ( osoby.PESEL = @id_lekarza );
-    
-    IF @id_lekarza = -1 
-    THEN LEAVE proc_label;
-    END IF;
-    
-	SELECT @id_pacjenta := id_osoby 
-    FROM osoby
-    WHERE ( osoby.PESEL = @id_pacjenta );
-    
-    IF @id_pacjenta = -1 
-    THEN LEAVE proc_label;
-    END IF;
-
 	INSERT INTO epizod ( id_personelu, id_pacjenta )
-    VALUES ( @id_lekarza, @id_pacjenta );
+    VALUES ( id_lekarza, id_pacjenta );
 
 END //
 
@@ -141,7 +97,7 @@ proc_label : BEGIN
     END IF;
     
     INSERT INTO Zlecenia_lekow ( id_leku, id_epizodu, dawka )
-    VALUES ( @id_leku, @id_epizodu, @dawka );
+    VALUES ( id_leku, id_epizodu, dawka );
 
 END //
 
@@ -150,30 +106,19 @@ DROP PROCEDURE IF EXISTS stworzSkierowanie //
 CREATE PROCEDURE stworzSkierowanie
 (
     id_epizodu			INT,
-    pesel_lekarza		VARCHAR(11),
+    id_lekarza			INT,
     data_skierowania 	DATE,
     rozpoznanie			VARCHAR(500)
 )
 proc_label : BEGIN
-    
-    DECLARE id_pracownika	INT;
-    SET 	@id_pracownika := -1;
     
     IF ( NOT EXISTS( SELECT * FROM Epizod WHERE ( Epizod.id_epizodu = @id_epizodu ) ) )
     THEN
 		LEAVE proc_label;
     END IF;
     
-    SELECT @id_pracownika = id_osoby 
-    FROM osoby
-    WHERE ( osoby.PESEL = @pesel_lekarza );
-    
-    IF ( @id_pracownika = -1 )
-    THEN LEAVE proc_label;
-    END IF;
-    
     INSERT INTO Skierowanie ( id_epizodu, id_personelu, data_skierowania, rozpoznanie )
-    VALUES ( @id_epizodu, @id_pracownika, @data_skierowania, @rozpoznanie );
+    VALUES ( id_epizodu, id_lekarza, data_skierowania, rozpoznanie );
 
 END //
 
@@ -194,7 +139,7 @@ proc_label : BEGIN
     END IF;
     
     INSERT INTO Diagnoza ( id_choroba_glowna, id_choroby_wspolist, id_epizodu )
-    VALUES ( @id_glownej_choroby, @choroby_wspolistniejace, @id_epizodu );
+    VALUES ( id_glownej_choroby, choroby_wspolistniejace, id_epizodu );
 
 END //
 
@@ -203,14 +148,11 @@ DROP PROCEDURE IF EXISTS stworz_Zlecenie_badania //
 CREATE PROCEDURE stworz_Zlecenie_badania
 (
 	id_uslugi 			INT,
-	pesel_pracownika 	VARCHAR(11),
+	id_pracownika 		INT,
 	data_zlecenia 		DATE,
 	id_epizodu 			INT
 )
 proc_label : BEGIN
-
-	DECLARE id_pracownika INT;
-    SET @id_pracownika := -1;
     
     IF ( ( NOT EXISTS( SELECT * FROM Slownik_procedur_medycznych WHERE ( Slownik_procedur_medycznych.id_uslugi = @id_uslugi ) ) )
 		OR ( NOT EXISTS( SELECT * FROM Epizod WHERE ( Epizod.id_epizodu = @id_epizodu ) ) ) )
@@ -218,16 +160,8 @@ proc_label : BEGIN
 		LEAVE proc_label;
     END IF;
     
-    SELECT @id_pracownika := id_osoby 
-    FROM osoby
-    WHERE ( osoby.PESEL = @pesel_pracownika );
-    
-    IF ( @id_pracownika = -1 )
-    THEN LEAVE proc_label;
-    END IF;    
-    
     INSERT INTO Zlecenie_badania ( id_uslugi, id_personelu, data_zlecenia, id_epizodu )
-    VALUES ( @id_uslugi, @id_personelu, @data_zlecenia, @id_epizodu );
+    VALUES ( id_uslugi, id_pracownika, data_zlecenia, id_epizodu );
 
 END //
 

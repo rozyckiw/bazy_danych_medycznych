@@ -37,11 +37,11 @@ BEGIN
     
     CREATE TABLE Personel (
 		
-        id_personelu INT AUTO_INCREMENT PRIMARY KEY,
-        id_pracownika INT NOT NULL,
-        data_zatrudnienia DATE,
-        data_zwolnienia DATE,
-        specjalizacja CHAR(1) NOT NULL CHECK (specjalizacja IN ('P', 'L')), #P - Pielęgniarka, L - Lekarz
+        id_personelu 		INT AUTO_INCREMENT PRIMARY KEY,
+        id_pracownika 		INT NOT NULL,
+        data_zatrudnienia 	DATE,
+        data_zwolnienia 	DATE,
+        specjalizacja 		CHAR(1) NOT NULL CHECK (specjalizacja IN ('P', 'L')), #P - Pielęgniarka, L - Lekarz
         FOREIGN KEY (id_pracownika) REFERENCES Osoby( id_osoby )    
     );
     

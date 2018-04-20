@@ -50,3 +50,13 @@ CALL stworzEpizod( 4, 3 );
 CALL stworzEpizod( 4, 5 );
 CALL stworzEpizod( 4, 6 );
 CALL stworzEpizod( 1, 7 );
+
+CALL stworzSkierowanie( 1, 192, '2015-02-15', 'Niezbornosc');
+CALL stworzSkierowanie( 2, 77, '2017-12-5', 'Starczowzrocznosc');
+CALL stworzSkierowanie( 3, 9, '2018-04-7', 'Zaburzenia refrakcji, nie okreslone');
+CALL stworzSkierowanie( 4, 18, '2016-11-1', 'Różnowzroczność (anisometropia) i różnica wielkości obrazów na siatkówce (aniseikonia)');
+
+CALL stworz_Diagnoze( 'H52.2', '-', 1);
+CALL stworz_Diagnoze( 'H52.4', '-', 2);
+CALL stworz_Diagnoze( 'H52.7', 'H01.9', 3);
+CALL stworz_Diagnoze( 'H52.3', '-', 4);

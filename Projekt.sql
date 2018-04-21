@@ -68,7 +68,7 @@ BEGIN
     
     CREATE TABLE Slownik_procedur_medycznych (
 		
-        id_procedury INT AUTO_INCREMENT PRIMARY KEY,
+        id_procedury varchar(6) PRIMARY KEY,
         nazwa_procedury VARCHAR(50) NOT NULL    
     );
     
@@ -143,7 +143,7 @@ BEGIN
 	CREATE TABLE Zlecenie_badania (
 		
         id_zlecenia INT AUTO_INCREMENT PRIMARY KEY,
-        id_uslugi INT NOT NULL,
+        id_uslugi varchar(6) NOT NULL,
         id_personelu INT NOT NULL,
         data_zlecenia DATE NOT NULL,
         id_epizodu INT NOT NULL,

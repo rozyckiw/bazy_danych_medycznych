@@ -147,14 +147,14 @@ DROP PROCEDURE IF EXISTS stworz_Zlecenie_badania //
 
 CREATE PROCEDURE stworz_Zlecenie_badania
 (
-	id_uslugi 			INT,
+	id_uslugi 			varchar(6),
 	id_pracownika 		INT,
 	data_zlecenia 		DATE,
 	id_epizodu 			INT
 )
 proc_label : BEGIN
     
-    IF ( ( NOT EXISTS( SELECT * FROM Slownik_procedur_medycznych WHERE ( Slownik_procedur_medycznych.id_uslugi = @id_uslugi ) ) )
+    IF ( ( NOT EXISTS( SELECT * FROM Slownik_procedur_medycznych WHERE ( id_uslugi = @id_uslugi ) ) )
 		OR ( NOT EXISTS( SELECT * FROM Epizod WHERE ( Epizod.id_epizodu = @id_epizodu ) ) ) )
     THEN
 		LEAVE proc_label;
@@ -164,15 +164,3 @@ proc_label : BEGIN
     VALUES ( id_uslugi, id_pracownika, data_zlecenia, id_epizodu );
 
 END //
-
-
-/*
-LOAD DATA LOCAL INFILE 'C:\\Users\\19513\\Desktop\\Bazy_danych_medycznych\\Bazy_danych_medycznych\\ICD-10.txt' 
-INTO TABLE Oddzial_Okulistyczny.Slownik_chorob
-CHARACTER SET UTF8
-FIELDS TERMINATED BY '	'
-LINES TERMINATED BY '\n'
-(@col1, @col2,@col3, @col4)
-SET kod = @col1, skrocony_opis = @col2, pelny_opis = @col3;
-*/
-

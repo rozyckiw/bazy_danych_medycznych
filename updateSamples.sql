@@ -1,3 +1,3 @@
 USE oddzial_okulistyczny;
 
-CALL zakonczEpizod( 5 );
+CALL zakonczEpizod( 4 );

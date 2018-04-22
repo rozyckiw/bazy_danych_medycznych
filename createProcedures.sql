@@ -62,7 +62,7 @@ CREATE PROCEDURE stworzUbezpieczenie
 BEGIN
 
 	INSERT INTO ubezpieczenie
-    VALUES ( id_osoby, nazwa_ubezpieczyciela, numer_ubezpieczenia, wazne_od, wazne_do );
+    VALUES ( id_osoby, nazwa_ubezpieczenia, numer_ubezpieczenia, wazne_od, wazne_do );
 
 END //
 
@@ -90,8 +90,8 @@ CREATE PROCEDURE stworz_Zlecenie_Leku
 )
 proc_label : BEGIN
     
-    IF ( ( NOT EXISTS( SELECT * FROM Slownik_lekow WHERE ( Slownik_lekow.id_leku = @id_leku ) ) )
-		OR ( NOT EXISTS( SELECT * FROM Epizod WHERE ( Epizod.id_epizodu = @id_epizodu ) ) ) )
+    IF ( ( NOT EXISTS( SELECT * FROM Slownik_lekow WHERE ( Slownik_lekow.id_leku = id_leku ) ) )
+		OR ( NOT EXISTS( SELECT * FROM Epizod WHERE ( Epizod.id_epizodu = id_epizodu ) ) ) )
     THEN
 		LEAVE proc_label;
     END IF;
@@ -112,7 +112,7 @@ CREATE PROCEDURE stworzSkierowanie
 )
 proc_label : BEGIN
     
-    IF ( NOT EXISTS( SELECT * FROM Epizod WHERE ( Epizod.id_epizodu = @id_epizodu ) ) )
+    IF ( NOT EXISTS( SELECT * FROM Epizod WHERE ( Epizod.id_epizodu = id_epizodu ) ) )
     THEN
 		LEAVE proc_label;
     END IF;
@@ -128,12 +128,12 @@ CREATE PROCEDURE stworz_Diagnoze
 (
 	id_glownej_choroby		VARCHAR(7),
     choroby_wspolistniejace	VARCHAR(50),
-    id_epizodu				int
+    id_epizodu				INT
 )
 proc_label : BEGIN
     
-    IF ( ( NOT EXISTS( SELECT * FROM Slownik_chorob WHERE ( Slownik_chorob.kod = @id_glownej_choroby ) ) )
-		OR ( NOT EXISTS( SELECT * FROM Epizod WHERE ( Epizod.id_epizodu = @id_epizodu ) ) ) )
+    IF ( ( NOT EXISTS( SELECT * FROM Slownik_chorob WHERE ( Slownik_chorob.kod = id_glownej_choroby ) ) )
+		OR ( NOT EXISTS( SELECT * FROM Epizod WHERE ( Epizod.id_epizodu = id_epizodu ) ) ) )
     THEN
 		LEAVE proc_label;
     END IF;
@@ -147,15 +147,15 @@ DROP PROCEDURE IF EXISTS stworz_Zlecenie_badania //
 
 CREATE PROCEDURE stworz_Zlecenie_badania
 (
-	id_uslugi 			varchar(6),
+	id_uslugi 			VARCHAR(6),
 	id_pracownika 		INT,
 	data_zlecenia 		DATE,
 	id_epizodu 			INT
 )
 proc_label : BEGIN
     
-    IF ( ( NOT EXISTS( SELECT * FROM Slownik_procedur_medycznych WHERE ( id_uslugi = @id_uslugi ) ) )
-		OR ( NOT EXISTS( SELECT * FROM Epizod WHERE ( Epizod.id_epizodu = @id_epizodu ) ) ) )
+    IF ( ( NOT EXISTS( SELECT * FROM Slownik_procedur_medycznych WHERE ( id_uslugi = id_uslugi ) ) )
+		OR ( NOT EXISTS( SELECT * FROM Epizod WHERE ( Epizod.id_epizodu = id_epizodu ) ) ) )
     THEN
 		LEAVE proc_label;
     END IF;

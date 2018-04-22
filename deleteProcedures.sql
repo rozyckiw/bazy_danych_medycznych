@@ -2,7 +2,6 @@ USE oddzial_okulistyczny;
 
 DELIMITER //
 
-
 DROP PROCEDURE IF EXISTS usunEpizod //
 
 CREATE PROCEDURE usunEpizod

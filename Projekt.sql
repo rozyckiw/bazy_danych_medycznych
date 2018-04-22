@@ -17,7 +17,7 @@ BEGIN
         imiona_rodzicow VARCHAR(50) NOT NULL,
         typ_dokumentu VARCHAR(50) NOT NULL CHECK (typ_dokumentu IN ('Dowód osobisty', 'Paszport')),
         seria_dokumentu VARCHAR(20) NOT NULL,
-        data_urodzenia date NOT NULL,
+        data_urodzenia DATE NOT NULL,
         miejsce_urodzenia VARCHAR(30),
         telefon_kontaktowy INT,
         plec CHAR(1) NOT NULL CHECK (plec IN ('K', 'M')),
@@ -30,7 +30,9 @@ BEGIN
         numer_domu VARCHAR(7) NOT NULL,
         kod_pocztowy VARCHAR(10) NOT NULL,
         gmina VARCHAR(30),
-        wojewodztwo VARCHAR(30)
+        wojewodztwo VARCHAR(30),
+        
+        UNIQUE (PESEL)
 	);
     
     SELECT 'Stworzono osoby';
@@ -68,8 +70,8 @@ BEGIN
     
     CREATE TABLE Slownik_procedur_medycznych (
 		
-        id_procedury varchar(6) PRIMARY KEY,
-        nazwa_procedury VARCHAR(50) NOT NULL    
+        id_procedury VARCHAR(6) PRIMARY KEY,
+        nazwa_procedury VARCHAR(100) NOT NULL    
     );
     
     CREATE TABLE Slownik_lekow (

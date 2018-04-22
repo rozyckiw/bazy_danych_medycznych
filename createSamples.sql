@@ -1,7 +1,7 @@
 USE oddzial_okulistyczny;
 
-SET @path = 'C://Users//Dominika//Desktop//Dominika//studia//inzynieria_biomedyczna//bazy_danych_medycznych//bazy_danych_medycznych//';
-
+#"C://Users//19513//Desktop//Bazy_danych_medycznych//bazy_danych_medycznych//";
+#"C://Users//Dominika//Desktop//Dominika//studia//inzynieria_biomedyczna//bazy_danych_medycznych//bazy_danych_medycznych//";
 
 CALL stworzPacjenta( 	'Wojciech', 'Różycki', '01020304051', 'Tomasz, Aneta', 'Dowód osobisty', 'ALU121314', '1995-06-07', 'Łódź', 'M', 
 						'123456789', 'Polska', 'Łódź', 'Uliczna', 1, '11-111', 'Łódź', 'łódzkie' );
@@ -54,28 +54,27 @@ CALL stworzEpizod( 4, 5 );
 CALL stworzEpizod( 4, 6 );
 CALL stworzEpizod( 1, 7 );
 
+-- stworz slownik lekow
+LOAD DATA LOCAL INFILE 'C://Users//19513//Desktop//Bazy_danych_medycznych//bazy_danych_medycznych//lista_lekow.txt'
+INTO TABLE Oddzial_Okulistyczny.Slownik_lekow
+CHARACTER SET UTF8
+FIELDS TERMINATED BY ' '
+LINES TERMINATED BY '\n'
+(@col1)
+SET nazwa_leku = @col1;
+
 CALL stworz_Zlecenie_Leku( 44, 1, '100mg, 2 op.');
 CALL stworz_Zlecenie_Leku( 21, 2, '20mg 40 kaps.');
 CALL stworz_Zlecenie_Leku( 8, 3, '500mg, 20 tabl.');
 CALL stworz_Zlecenie_Leku( 90, 4, '2mg, 28 tabl.');
 
-CALL stworzSkierowanie( 1, 192, '2015-02-15', 'Niezbornosc');
-CALL stworzSkierowanie( 2, 77, '2017-12-5', 'Starczowzrocznosc');
-CALL stworzSkierowanie( 3, 9, '2018-04-7', 'Zaburzenia refrakcji, nie okreslone');
-CALL stworzSkierowanie( 4, 18, '2016-11-1', 'Różnowzroczność (anisometropia) i różnica wielkości obrazów na siatkówce (aniseikonia)');
-
-CALL stworz_Diagnoze( 'H52.2', '-', 1);
-CALL stworz_Diagnoze( 'H52.4', '-', 2);
-CALL stworz_Diagnoze( 'H52.7', 'H01.9', 3);
-CALL stworz_Diagnoze( 'H52.3', '-', 4);
-
-CALL stworz_Zlecenie_badania( '02.99', 4, '2015-02-17', 1);
-CALL stworz_Zlecenie_badania( '93.07', 1, '2017-12-6', 2);
-CALL stworz_Zlecenie_badania( 'C05', 4, '2018-04-27', 3);
-CALL stworz_Zlecenie_badania( '07.15', 1, '2016-11-8', 4);
+CALL stworzSkierowanie( 1, 1, '2015-02-15', 'Niezbornosc');
+CALL stworzSkierowanie( 2, 1, '2017-12-5', 'Starczowzrocznosc');
+CALL stworzSkierowanie( 3, 4, '2018-04-7', 'Zaburzenia refrakcji, nie okreslone');
+CALL stworzSkierowanie( 4, 4, '2016-11-1', 'Różnowzroczność (anisometropia) i różnica wielkości obrazów na siatkówce (aniseikonia)');
 
 -- stworz slownik chorob
-LOAD DATA LOCAL INFILE 'C://Users//Dominika//Desktop//Dominika//studia//inzynieria_biomedyczna//bazy_danych_medycznych//bazy_danych_medycznych//ICD-10.txt'
+LOAD DATA LOCAL INFILE 'C://Users//19513//Desktop//Bazy_danych_medycznych//bazy_danych_medycznych//ICD-10.txt'
 INTO TABLE Oddzial_Okulistyczny.Slownik_chorob
 CHARACTER SET UTF8
 FIELDS TERMINATED BY '	'
@@ -83,9 +82,13 @@ LINES TERMINATED BY '\n'
 (@col1, @col2,@col3, @col4)
 SET kod = @col1, skrocony_opis = @col2, pelny_opis = @col3;
 
+CALL stworz_Diagnoze( 'H5202', '-', 1);
+CALL stworz_Diagnoze( 'H5204', '-', 2);
+CALL stworz_Diagnoze( 'H527', 'H01.9', 3);
+CALL stworz_Diagnoze( 'H5203', '-', 4);
 
 -- stworz slownik procedur medycznych
-LOAD DATA LOCAL INFILE 'C://Users//Dominika//Desktop//Dominika//studia//inzynieria_biomedyczna//bazy_danych_medycznych//bazy_danych_medycznych//ICD-9.txt'
+LOAD DATA LOCAL INFILE 'C://Users//19513//Desktop//Bazy_danych_medycznych//bazy_danych_medycznych//ICD-9.txt'
 INTO TABLE Oddzial_Okulistyczny.Slownik_procedur_medycznych
 CHARACTER SET UTF8
 FIELDS TERMINATED BY '	'
@@ -93,16 +96,8 @@ LINES TERMINATED BY '\n'
 (@col1, @col2)
 SET id_procedury = @col1, nazwa_procedury = @col2;
 
--- stworz slownik lekow
-LOAD DATA LOCAL INFILE 'C://Users//Dominika//Desktop//Dominika//studia//inzynieria_biomedyczna//bazy_danych_medycznych//bazy_danych_medycznych//lista_lekow.txt'
-INTO TABLE Oddzial_Okulistyczny.Slownik_lekow
-CHARACTER SET UTF8
-LINES TERMINATED BY '\n'
-(@col1)
-SET nazwa_leku = @col1;
-
-select * from Slownik_lekow;
-select * from Slownik_procedur_medycznych;
-select * from Slownik_chorob;
-
+CALL stworz_Zlecenie_badania( '02.99', 4, '2015-02-17', 1);
+CALL stworz_Zlecenie_badania( '93.07', 1, '2017-12-6', 2);
+CALL stworz_Zlecenie_badania( 'C05', 4, '2018-04-27', 3);
+CALL stworz_Zlecenie_badania( '07.15', 1, '2016-11-8', 4);
 

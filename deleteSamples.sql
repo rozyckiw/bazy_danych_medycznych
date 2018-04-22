@@ -1,3 +1,3 @@
 USE oddzial_okulistyczny;
 
-CALL usunEpizod( 5 );
+CALL usunEpizod( 4 );

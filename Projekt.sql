@@ -75,8 +75,7 @@ BEGIN
     CREATE TABLE Slownik_lekow (
 		
         id_leku INT AUTO_INCREMENT PRIMARY KEY,
-        nazwa_leku varchar(20) NOT NULL,
-        producent_leku varchar(20)
+        nazwa_leku varchar(20) NOT NULL
     );
     
     SELECT 'Stworzono slownik lekow';

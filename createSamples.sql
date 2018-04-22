@@ -92,3 +92,17 @@ FIELDS TERMINATED BY '	'
 LINES TERMINATED BY '\n'
 (@col1, @col2)
 SET id_procedury = @col1, nazwa_procedury = @col2;
+
+-- stworz slownik lekow
+LOAD DATA LOCAL INFILE 'C://Users//Dominika//Desktop//Dominika//studia//inzynieria_biomedyczna//bazy_danych_medycznych//bazy_danych_medycznych//lista_lekow.txt'
+INTO TABLE Oddzial_Okulistyczny.Slownik_lekow
+CHARACTER SET UTF8
+LINES TERMINATED BY '\n'
+(@col1)
+SET nazwa_leku = @col1;
+
+select * from Slownik_lekow;
+select * from Slownik_procedur_medycznych;
+select * from Slownik_chorob;
+
+

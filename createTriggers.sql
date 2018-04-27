@@ -24,13 +24,3 @@ BEGIN
 	
 END //
 
-DROP TRIGGER IF EXISTS dodaj_do_archiwum //
-
-CREATE TRIGGER dodaj_do_archiwum BEFORE DELETE ON epizod
-FOR EACH ROW
-BEGIN
-
-    INSERT INTO archiwum ( id_epizodu, data_rozp_epizodu, data_zak_epizodu, id_personelu, id_pacjenta )
-    VALUES ( OLD.id_epizodu, OLD.data_rozp_epizodu, OLD.data_zak_epizodu, OLD.id_personelu, OLD.id_pacjenta );
-
-END //

@@ -75,8 +75,8 @@ CREATE PROCEDURE stworzEpizod
 )
 BEGIN
 
-	INSERT INTO epizod ( id_personelu, id_pacjenta )
-    VALUES ( id_lekarza, id_pacjenta );
+	INSERT INTO epizod ( id_personelu, id_pacjenta)
+    VALUES ( id_lekarza, id_pacjenta);
 
 END //
 

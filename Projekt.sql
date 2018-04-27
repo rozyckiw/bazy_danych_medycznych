@@ -95,17 +95,7 @@ BEGIN
     );
     
     SELECT 'Stworzono epizody';
-    
-    CREATE TABLE Archiwum (
-		
-        id_epizodu INT PRIMARY KEY,
-        data_rozp_epizodu DATE NOT NULL,
-        data_zak_epizodu DATE NOT NULL,
-        id_personelu INT NOT NULL,
-        id_pacjenta INT NOT NULL,
-        FOREIGN KEY (id_personelu) REFERENCES Personel( id_personelu ),
-        FOREIGN KEY (id_pacjenta) REFERENCES Osoby( id_osoby )
-    );
+
     
 	CREATE TABLE Zlecenia_lekow (
 		

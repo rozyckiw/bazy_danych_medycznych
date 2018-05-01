@@ -40,7 +40,7 @@ BEGIN
     CREATE TABLE Personel (
 		
         id_personelu 		INT AUTO_INCREMENT PRIMARY KEY,
-        id_pracownika 		INT NOT NULL,
+        id_pracownika 		INT UNIQUE NOT NULL,
         data_zatrudnienia 	DATE,
         data_zwolnienia 	DATE,
         specjalizacja 		CHAR(1) NOT NULL CHECK (specjalizacja IN ('P', 'L')), #P - Pielęgniarka, L - Lekarz

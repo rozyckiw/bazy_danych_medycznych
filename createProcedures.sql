@@ -75,7 +75,7 @@ CREATE PROCEDURE stworzEpizod
 )
 BEGIN
 
-	INSERT INTO epizod ( id_personelu, id_pacjenta)
+	INSERT INTO epizod ( id_pracownika, id_pacjenta)
     VALUES ( id_lekarza, id_pacjenta);
 
 END //
@@ -117,7 +117,7 @@ proc_label : BEGIN
 		LEAVE proc_label;
     END IF;
     
-    INSERT INTO Skierowanie ( id_epizodu, id_personelu, data_skierowania, rozpoznanie )
+    INSERT INTO Skierowanie ( id_epizodu, id_pracownika, data_skierowania, rozpoznanie )
     VALUES ( id_epizodu, id_lekarza, data_skierowania, rozpoznanie );
 
 END //

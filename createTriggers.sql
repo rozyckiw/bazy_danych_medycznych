@@ -13,7 +13,7 @@ BEGIN
     SELECT id_pracownika 
     INTO pracownik
     FROM personel 
-    WHERE ( personel.id_personelu = NEW.id_personelu );
+    WHERE ( personel.id_pracownika = NEW.id_pracownika );
     
     IF ( NOT EXISTS ( SELECT * FROM personel WHERE ( personel.id_pracownika = pracownik AND personel.specjalizacja = 'L' ) ) 
 			OR ( pracownik = NEW.id_pacjenta ) )

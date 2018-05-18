@@ -39,7 +39,6 @@ BEGIN
     
     CREATE TABLE Personel (
 		
-        id_personelu 		INT AUTO_INCREMENT PRIMARY KEY,
         id_pracownika 		INT UNIQUE NOT NULL,
         data_zatrudnienia 	DATE,
         data_zwolnienia 	DATE,
@@ -88,9 +87,9 @@ BEGIN
 		id_epizodu INT AUTO_INCREMENT PRIMARY KEY,
         data_rozp_epizodu DATETIME DEFAULT NOW(),
         data_zak_epizodu DATE,
-        id_personelu INT NOT NULL,
+        id_pracownika INT NOT NULL,
         id_pacjenta INT NOT NULL,
-        FOREIGN KEY (id_personelu) REFERENCES Personel( id_personelu ),
+        FOREIGN KEY (id_pracownika) REFERENCES Personel( id_pracownika ),
         FOREIGN KEY (id_pacjenta) REFERENCES Osoby( id_osoby )
     );
     
@@ -112,7 +111,7 @@ BEGIN
 		
         id_skierowania INT AUTO_INCREMENT PRIMARY KEY,
         id_epizodu INT NOT NULL,
-        id_personelu INT NOT NULL,
+        id_pracownika INT NOT NULL,
         data_skierowania DATE NOT NULL,
         rozpoznanie VARCHAR(500) NOT NULL,
         FOREIGN KEY (id_epizodu) REFERENCES Epizod( id_epizodu ) 
@@ -135,7 +134,7 @@ BEGIN
 		
         id_zlecenia INT AUTO_INCREMENT PRIMARY KEY,
         id_uslugi varchar(6) NOT NULL,
-        id_personelu INT NOT NULL,
+        id_pracownika INT NOT NULL,
         data_zlecenia DATE NOT NULL,
         id_epizodu INT NOT NULL,
         FOREIGN KEY (id_uslugi) REFERENCES Slownik_procedur_medycznych( id_procedury ),

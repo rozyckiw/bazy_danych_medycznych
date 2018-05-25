@@ -160,7 +160,7 @@ proc_label : BEGIN
 		LEAVE proc_label;
     END IF;
     
-    INSERT INTO Zlecenie_badania ( id_uslugi, id_personelu, data_zlecenia, id_epizodu )
+    INSERT INTO Zlecenie_badania ( id_uslugi, id_pracownika, data_zlecenia, id_epizodu )
     VALUES ( id_uslugi, id_pracownika, data_zlecenia, id_epizodu );
 
 END //

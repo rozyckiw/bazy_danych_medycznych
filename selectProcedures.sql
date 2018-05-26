@@ -2,40 +2,96 @@ USE oddzial_okulistyczny;
 
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS wybierzZakonczoneEpizody //
+DROP VIEW IF EXISTS wybierzZakonczoneEpizody //
 
-CREATE PROCEDURE wybierzZakonczoneEpizody()
-BEGIN
-	
-    SELECT * FROM epizod
-    WHERE ( epizod.data_zak_epizodu IS NOT NULL );
+CREATE VIEW wybierzZakonczoneEpizody AS
+
+    SELECT 
+        ep.id_epizodu, 
+        ep.data_rozp_epizodu, 
+        ep.data_zak_epizodu, 
+        ep.id_pacjenta AS 'ID pacjenta', 
+        pacjent.imie AS 'Imie pacjenta',  
+        pacjent.nazwisko AS 'Nazwisko pacjenta', 
+        ep.id_pracownika AS 'ID pracownika', 
+        pracownik.imie AS 'Imie pracownika', 
+        pracownik.nazwisko AS 'Nazwisko pracownika', 
+        per.data_zatrudnienia, 
+        per.specjalizacja
+	FROM 
+		Epizod AS ep
+	LEFT JOIN Osoby AS pacjent ON ( pacjent.id_osoby = ep.id_pacjenta )
+    LEFT JOIN Personel AS per ON ( per.id_pracownika = ep.id_pracownika )
+    LEFT JOIN Osoby AS pracownik ON ( pracownik.id_osoby = per.id_pracownika )
+    WHERE ( ep.data_zak_epizodu IS NOT NULL ) //
     
-END //
 
-DROP PROCEDURE IF EXISTS wybierzOtwarteEpizody //
+DROP VIEW IF EXISTS wybierzOtwarteEpizody //
 
-CREATE PROCEDURE wybierzOtwarteEpizody()
-BEGIN
-	
-    SELECT * FROM epizod
-    WHERE ( epizod.data_zak_epizodu IS NULL );
+CREATE VIEW wybierzOtwarteEpizody AS
+
+    SELECT 
+        ep.id_epizodu, 
+        ep.data_rozp_epizodu, 
+        ep.data_zak_epizodu, 
+        ep.id_pacjenta AS 'ID pacjenta', 
+        pacjent.imie AS 'Imie pacjenta',  
+        pacjent.nazwisko AS 'Nazwisko pacjenta', 
+        ep.id_pracownika AS 'ID pracownika', 
+        pracownik.imie AS 'Imie pracownika', 
+        pracownik.nazwisko AS 'Nazwisko pracownika', 
+        per.data_zatrudnienia, 
+        per.specjalizacja
+	FROM 
+		Epizod AS ep
+	LEFT JOIN Osoby AS pacjent ON ( pacjent.id_osoby = ep.id_pacjenta )
+    LEFT JOIN Personel AS per ON ( per.id_pracownika = ep.id_pracownika )
+    LEFT JOIN Osoby AS pracownik ON ( pracownik.id_osoby = per.id_pracownika )
+    WHERE ( ep.data_zak_epizodu IS NULL ) //
     
-END //
-
-DROP PROCEDURE IF EXISTS wyswietlHistoriePacjenta //
-
-CREATE PROCEDURE wyswietlHistoriePacjenta
-(
-	id_pacjenta INT
-)
-BEGIN
-	
-    SELECT * FROM epizod
-    WHERE ( epizod.id_pacjenta = id_pacjenta );
     
-END //
+DROP VIEW IF EXISTS wyswietlHistoriePacjentow //
 
-DROP PROCEDURE IF EXISTS wyswietlOsobyZWaznymUbezpieczeniem //
+CREATE VIEW wyswietlHistoriePacjentow AS
+
+    SELECT 
+        ep.id_epizodu, 
+        ep.data_rozp_epizodu, 
+        ep.data_zak_epizodu, 
+        ep.id_pacjenta AS 'ID pacjenta', 
+        pacjent.imie AS 'Imie pacjenta',  
+        pacjent.nazwisko AS 'Nazwisko pacjenta', 
+        ep.id_pracownika AS 'ID pracownika', 
+        pracownik.imie AS 'Imie pracownika', 
+        pracownik.nazwisko AS 'Nazwisko pracownika', 
+        per.data_zatrudnienia, 
+        per.specjalizacja
+	FROM 
+		Epizod AS ep
+	LEFT JOIN Osoby AS pacjent ON ( pacjent.id_osoby = ep.id_pacjenta )
+    LEFT JOIN Personel AS per ON ( per.id_pracownika = ep.id_pracownika )
+    LEFT JOIN Osoby AS pracownik ON ( pracownik.id_osoby = per.id_pracownika ) //
+
+
+DROP VIEW IF EXISTS wyswietlOsobyZWaznymUbezpieczeniem //
+
+CREATE VIEW wyswietlOsobyZWaznymUbezpieczeniem AS
+
+    SELECT 
+		ub.nazwa_ubezpieczyciela,
+        ub.numer_ubezpieczenia,
+        ub.wazne_od,
+        ub.wazne_do,
+        Osoby.imie,  
+        Osoby.nazwisko,
+        Osoby.PESEL
+	FROM 
+		Ubezpieczenie AS ub
+	LEFT JOIN Osoby ON ( Osoby.id_osoby = ub.id_osoby )
+    WHERE ( CURDATE() BETWEEN ub.wazne_od AND ub.wazne_do ) //
+
+
+/*DROP PROCEDURE IF EXISTS wyswietlOsobyZWaznymUbezpieczeniem //
 
 CREATE PROCEDURE wyswietlOsobyZWaznymUbezpieczeniem()
 BEGIN
@@ -45,3 +101,5 @@ BEGIN
     WHERE ( CURDATE() BETWEEN ubezpieczenie.wazne_od AND ubezpieczenie.wazne_do );
     
 END //
+*/
+

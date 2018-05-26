@@ -8,6 +8,10 @@ SELECT * FROM wyswietlHistoriePacjentow;
 
 SELECT * FROM wyswietlOsobyZWaznymUbezpieczeniem;
 
+SELECT * FROM wyswietlChorobyPacjentow;
+
+
+
 /*CALL wybierzZakonczoneEpizody();
 
 CALL wybierzOtwarteEpizody();

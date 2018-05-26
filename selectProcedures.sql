@@ -91,6 +91,25 @@ CREATE VIEW wyswietlOsobyZWaznymUbezpieczeniem AS
     WHERE ( CURDATE() BETWEEN ub.wazne_od AND ub.wazne_do ) //
 
 
+DROP VIEW IF EXISTS wyswietlChorobyPacjentow //
+
+CREATE VIEW wyswietlChorobyPacjentow AS
+
+    SELECT 
+		pacjent.imie,
+        pacjent.nazwisko,
+        FLOOR( DATEDIFF( CURDATE(), pacjent.data_urodzenia ) / 365 ) AS 'Wiek',
+		choroba.kod AS 'Kod choroby',
+        choroba.skrocony_opis AS 'Opis choroby'
+	FROM 
+		Slownik_chorob AS choroba
+	LEFT JOIN Diagnoza AS diag ON ( diag.id_choroba_glowna = choroba.kod )
+    LEFT JOIN Epizod AS ep ON ( ep.id_epizodu = diag.id_epizodu )
+    LEFT JOIN Osoby AS pacjent ON ( pacjent.id_osoby = ep.id_pacjenta )
+    WHERE( pacjent.imie IS NOT NULL )
+    GROUP by choroba.kod //
+
+
 /*DROP PROCEDURE IF EXISTS wyswietlOsobyZWaznymUbezpieczeniem //
 
 CREATE PROCEDURE wyswietlOsobyZWaznymUbezpieczeniem()

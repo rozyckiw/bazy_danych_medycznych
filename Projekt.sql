@@ -95,7 +95,6 @@ BEGIN
     
     SELECT 'Stworzono epizody';
 
-    
 	CREATE TABLE Zlecenia_lekow (
 		
         id_zlecenia INT AUTO_INCREMENT PRIMARY KEY,
@@ -105,6 +104,7 @@ BEGIN
         FOREIGN KEY (id_leku) REFERENCES Slownik_lekow( id_leku ),
         FOREIGN KEY (id_epizodu) REFERENCES Epizod( id_epizodu )
     );
+    
     SELECT 'Stworzono zlecenia lekow';
     
 	CREATE TABLE Skierowanie (
@@ -116,6 +116,7 @@ BEGIN
         rozpoznanie VARCHAR(500) NOT NULL,
         FOREIGN KEY (id_epizodu) REFERENCES Epizod( id_epizodu ) 
     );
+    
     SELECT 'Stworzono skierowania';
     
 	CREATE TABLE Diagnoza (

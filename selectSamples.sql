@@ -1,5 +1,9 @@
 USE oddzial_okulistyczny;
 
+SELECT * FROM wyswietlChorobyPacjentow;
+
+SELECT * FROM wyswietlLekiPacjentow;
+
 SELECT * FROM wybierzZakonczoneEpizody;
 
 SELECT * FROM wybierzOtwarteEpizody;
@@ -7,8 +11,6 @@ SELECT * FROM wybierzOtwarteEpizody;
 SELECT * FROM wyswietlHistoriePacjentow;
 
 SELECT * FROM wyswietlOsobyZWaznymUbezpieczeniem;
-
-SELECT * FROM wyswietlChorobyPacjentow;
 
 
 

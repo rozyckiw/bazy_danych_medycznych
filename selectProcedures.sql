@@ -108,6 +108,24 @@ CREATE VIEW wyswietlChorobyPacjentow AS
     LEFT JOIN Osoby AS pacjent ON ( pacjent.id_osoby = ep.id_pacjenta )
     WHERE( pacjent.imie IS NOT NULL )
     GROUP by choroba.kod //
+    
+DROP VIEW IF EXISTS wyswietlLekiPacjentow //
+    
+CREATE VIEW wyswietlLekiPacjentow AS
+
+    SELECT 
+		pacjent.imie,
+        pacjent.nazwisko,
+        FLOOR( DATEDIFF( CURDATE(), pacjent.data_urodzenia ) / 365 ) AS 'Wiek',
+		lek.id_leku AS 'Id leku',
+        lek.nazwa_leku AS 'Opis leku'
+	FROM 
+		Slownik_lekow AS lek
+	LEFT JOIN Zlecenia_lekow AS zlec ON ( zlec.id_leku = lek.id_leku )
+    LEFT JOIN Epizod AS ep ON ( ep.id_epizodu = zlec.id_epizodu )
+    LEFT JOIN Osoby AS pacjent ON ( pacjent.id_osoby = ep.id_pacjenta )
+    WHERE( pacjent.imie IS NOT NULL )
+    GROUP by pacjent.imie //
 
 
 /*DROP PROCEDURE IF EXISTS wyswietlOsobyZWaznymUbezpieczeniem //

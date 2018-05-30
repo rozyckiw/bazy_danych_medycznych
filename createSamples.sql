@@ -55,7 +55,7 @@ CALL stworzEpizod( 4, 6 );
 CALL stworzEpizod( 1, 7 );
 
 -- stworz slownik lekow
-LOAD DATA LOCAL INFILE 'C://Users//19513//Desktop//Bazy_danych_medycznych//bazy_danych_medycznych//lista_lekow.txt'
+LOAD DATA LOCAL INFILE 'C://Users//Dominika//Desktop//Dominika//studia//inzynieria_biomedyczna//bazy_danych_medycznych//bazy_danych_medycznych//lista_lekow.txt'
 INTO TABLE Oddzial_Okulistyczny.Slownik_lekow
 CHARACTER SET UTF8
 FIELDS TERMINATED BY ' '
@@ -74,7 +74,7 @@ CALL stworzSkierowanie( 3, 4, '2018-04-7', 'Zaburzenia refrakcji, nie okreslone'
 CALL stworzSkierowanie( 4, 4, '2016-11-1', 'Różnowzroczność (anisometropia) i różnica wielkości obrazów na siatkówce (aniseikonia)');
 
 -- stworz slownik chorob
-LOAD DATA LOCAL INFILE 'C://Users//19513//Desktop//Bazy_danych_medycznych//bazy_danych_medycznych//ICD-10.txt'
+LOAD DATA LOCAL INFILE 'C://Users//Dominika//Desktop//Dominika//studia//inzynieria_biomedyczna//bazy_danych_medycznych//bazy_danych_medycznych//ICD-10.txt'
 INTO TABLE Oddzial_Okulistyczny.Slownik_chorob
 CHARACTER SET UTF8
 FIELDS TERMINATED BY '	'
@@ -88,7 +88,7 @@ CALL stworz_Diagnoze( 'H527', 'H01.9', 3);
 CALL stworz_Diagnoze( 'H5203', '-', 4);
 
 -- stworz slownik procedur medycznych
-LOAD DATA LOCAL INFILE 'C://Users//19513//Desktop//Bazy_danych_medycznych//bazy_danych_medycznych//ICD-9.txt'
+LOAD DATA LOCAL INFILE 'C://Users//Dominika//Desktop//Dominika//studia//inzynieria_biomedyczna//bazy_danych_medycznych//bazy_danych_medycznych//ICD-9.txt'
 INTO TABLE Oddzial_Okulistyczny.Slownik_procedur_medycznych
 CHARACTER SET UTF8
 FIELDS TERMINATED BY '	'

@@ -114,7 +114,8 @@ BEGIN
         id_pracownika INT NOT NULL,
         data_skierowania DATE NOT NULL,
         rozpoznanie VARCHAR(500) NOT NULL,
-        FOREIGN KEY (id_epizodu) REFERENCES Epizod( id_epizodu ) 
+        FOREIGN KEY (id_epizodu) REFERENCES Epizod( id_epizodu ),
+        UNIQUE (id_epizodu)
     );
     
     SELECT 'Stworzono skierowania';

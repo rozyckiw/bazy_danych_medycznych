@@ -126,8 +126,56 @@ CREATE VIEW wyswietlLekiPacjentow AS
     LEFT JOIN Osoby AS pacjent ON ( pacjent.id_osoby = ep.id_pacjenta )
     WHERE( pacjent.imie IS NOT NULL )
     GROUP by pacjent.imie //
+    
+
+DROP VIEW IF EXISTS wyswietlLekarzy //
+    
+CREATE VIEW wyswietlLekarzy AS
+
+    SELECT * FROM Osoby AS osoby, Personel AS presonel
+    WHERE( id_osoby = id_pracownika and specjalizacja = 'L')
+    GROUP by id_osoby //
+    
 
 
+DROP VIEW IF EXISTS wyswietlPielegniarki //
+    
+CREATE VIEW wyswietlPielegniarki AS
+
+    SELECT * FROM Osoby AS osoby, Personel AS presonel
+    WHERE( id_osoby = id_pracownika and specjalizacja = 'P')
+    GROUP by id_osoby //
+    
+    
+    
+DROP VIEW IF EXISTS wyswietlPacjentow //
+    
+CREATE VIEW wyswietlPacjentow AS
+
+    SELECT * FROM Osoby AS osoby, Epizod AS epizod
+    WHERE( id_osoby = id_pacjenta)
+    GROUP by id_osoby//
+    
+    
+    
+DROP VIEW IF EXISTS wyswietlWszystkieZleconeBadania //
+    
+CREATE VIEW wyswietlWszystkieZleconeBadania AS
+
+    SELECT Zlecenie_badania.id_uslugi, Slownik_procedur_medycznych.nazwa_procedury 
+    FROM Epizod AS epizod, Zlecenie_badania, Slownik_procedur_medycznych
+    WHERE( Zlecenie_badania.id_epizodu = Epizod.id_epizodu 
+			and Zlecenie_badania.id_uslugi = Slownik_procedur_medycznych.id_procedury)//
+            
+            
+DROP VIEW IF EXISTS wyswietlSkierowania //
+    
+CREATE VIEW wyswietlSkierowania AS
+
+    SELECT Skierowanie.id_skierowania, Osoby.imie, Osoby.nazwisko, Skierowanie.id_pracownika AS id_lekarza, 
+			Skierowanie.data_skierowania, Skierowanie.rozpoznanie	
+	FROM Skierowanie, Osoby, Epizod
+    WHERE( Skierowanie.id_epizodu = Epizod.id_epizodu and Epizod.id_pacjenta = Osoby.id_osoby)
 /*DROP PROCEDURE IF EXISTS wyswietlOsobyZWaznymUbezpieczeniem //
 
 CREATE PROCEDURE wyswietlOsobyZWaznymUbezpieczeniem()
